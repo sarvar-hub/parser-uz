@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    body {
+        font-family: "Roboto", sans-serif;
+        font-size: 18px;
+        background-color: #fdfdfd;
+    }
+
+    .head_text {
+        color: white;
+    }
+
+    .card {
+        box-shadow: 0 16px 48px #E3E7EB;
+    }
+</style>
+
+<header class="masthead">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class=" col-md-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h3 class=" site-heading my-4 mt-3 text-white"> Welcome to my awesome Blog </h3>
+                    <p class="text-light">We Love Django As much as you do..! &nbsp
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <div class="row">
+        <!-- Blog Entries Column -->
+          
+        <div class="col-md-8 mt-3 left">
+            {% for post in posts %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        {% if post.image_link is None  %} 
+                            <img class="card-img-top d-flex col-2 m-2" style="hight: 100px;" src="https://t4.ftcdn.net/jpg/00/44/45/69/360_F_44456957_SvuN2dznpViWmYuGsUOyOUWJeFIgaCOt.jpg" alt="image">
+                        {% else %}
+                            <img class="card-img-top d-flex col-2 m-2" style="hight: 100px;"  src="{{ post.image_link }}" alt="image">
+                        {% endif %}
+                        
+                        <h5 class="card-title d-flex col-6 m-2  ">{{ post.title }}</h2>
+                        
+                    </div>
+                    <hr>
+
+                    <p class="card-text text-muted h6">{{ post.site }} | {{ post.created_on}} </p>
+                    <p class="card-text">{{post.content|slice:":200" }}</p>
+                    {% comment %} <a href="{% url 'post_detail' post.slug  %}" class="btn btn-primary">Read More &rarr;</a> {% endcomment %}
+                    <a href="{{ post.link }}" class="btn btn-primary">To Website &rarr;</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="container d-flex justify-content-center">
+            <div class="pagination">
+                <span class="step-links">
+                    {% if posts.has_previous %}
+                        <a href="?page=1">&laquo; birinchi</a>
+                        <a href="?page={{ posts.previous_page_number }}">oldingi</a>
+                    {% endif %}
+            
+                    <span class="current-page">
+                        Sahifa {{ posts.number }}/{{ posts.paginator.num_pages }}
+                    </span>
+                    
+            
+                    {% if posts.has_next %}
+                        <a href="?page={{ posts.next_page_number }}">keyingi</a>
+                        <a href="?page={{ posts.paginator.num_pages }}">oxirgi &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+        
+
+        
+
+
+
+        {% block sidebar %} {% include 'sidebar.html' %} {% endblock sidebar %}
+        
+    </div>
+
+    
+    
+</div>
+{%endblock%}
